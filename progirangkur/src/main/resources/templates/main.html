@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>oru tinklapis</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  
+</head>
+<body >
+
+<div class="container "id="root">
+	<div class="row">
+		<div class="col-12 px-0">
+			<div class="card border border-primary">
+		        <div class="card-body text-center px-0">
+		             <h5 > Hidrologiniai duomenys </h5>
+		    	</div>
+			</div>
+		</div>
+	</div>
+	<div class="row ">
+		<div class="col-6 px-0">
+			<div class="card border border-info rounded-0">
+        		<div class="card-body text-center p-0">
+             		 <h5 id="one" class="card-title text-primary" onClick="document.getElementById('vanduo').scrollIntoView();">Vandens greitis 
+					  <img id="velocityDown"  th:src="@{/images/down.png}" style="width:15px; height:10px" />
+					  <img id="velocityUp"  th:src="@{/images/up.png}" style="width:15px; height:10px" />
+             		 </h5>
+   					 <p class="card-text">{{velocity.slice(-1)[0] }} (mazgų)</p>
+    			</div>
+			</div>		
+		</div>
+		<div class="col-6 px-0">
+			<div class="card border border-info rounded-0">
+        		<div class="card-body text-center p-0">
+             		<h5 class="card-title text-primary" onClick="document.getElementById('vanduo').scrollIntoView();">Vandens tekėjimo kryptis</h5>
+    				<p class="card-text">{{WaterDirection }}</p>
+    			</div>
+			</div>		
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12 px-0">		
+			<div class="card border border-primary">
+		        <div class="card-body text-center px-0">
+		            <h5> Meteorologiniai duomenys </h5>
+		    	</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-6 col-lg-4 px-0">
+			<div class="card border border-info rounded-0">
+        		<div  class="card-body text-center p-0">
+             		<h5 class="card-title text-primary" onClick="document.getElementById('vejas').scrollIntoView();">Vėjo greitis
+ 
+					  <img  id="windDown" th:src="@{/images/down.png}" style="width:15px; height:10px" />
+					  <img  id="windUp" th:src="@{/images/up.png}" style="width:15px; height:10px" />
+					
+             		</h5>
+    				<p class="card-text">{{windSpeed.slice(-1)[0]}} (m/s)</p>
+    			</div>
+			</div>		
+		</div>
+		<div class="col-sm-6 col-lg-4 px-0">
+			<div class="card border border-info rounded-0">
+        		<div class="card-body text-center p-0">
+             		<h5 class="card-title text-primary"onClick="document.getElementById('vejas').scrollIntoView();">Vėjo gūsių greitis
+					  <img id="gustDown" th:src="@{/images/down.png}" style="width:15px; height:10px" />
+					  <img id="gustUp" th:src="@{/images/up.png}" style="width:15px; height:10px" />
+             		</h5>
+    				<p class="card-text">{{windGust.slice(-1)[0] }} (m/s)</p>
+    			</div>
+			</div>		
+		</div>
+		<div class="col-sm-6 col-lg-4 px-0">
+			<div class="card border border-info rounded-0">
+        		<div class="card-body text-center p-0">
+             		<h5 class="card-title text-primary"onClick="document.getElementById('vejas').scrollIntoView();">Vėjo kryptis</h5>
+    				<p class="card-text">{{-windDirection.slice(-1)[0]+90 }} (Deg.M)</p>
+    			</div>
+			</div>		
+		</div>
+		<div class="col-sm-6 col-lg-4 px-0">
+			<div class="card border border-info rounded-0">
+        		<div class="card-body text-center p-0" >
+             		<h5 class="card-title text-primary" onClick="document.getElementById('temperatura').scrollIntoView();">Temperatūra
+					  <img id="tempDown"  th:src="@{/images/down.png}" style="width:15px; height:10px" />
+					  <img id="tempUp"  th:src="@{/images/up.png}" style="width:15px; height:10px" />
+             		</h5>
+    				<p class="card-text ">{{temperature.slice(-1)[0] }} (°C)</p>
+    			</div>
+			</div>		
+		</div>
+		<div class="col-sm-6 col-lg-4 px-0">
+			<div class="card border border-info rounded-0">
+        		<div class="card-body text-center p-0">
+             		<h5 class="card-title text-primary" onClick="document.getElementById('matomumas').scrollIntoView();">Matomumas
+					  <img id="visibilityDown"  th:src="@{/images/down.png}" style="width:15px; height:10px" />
+					  <img id="visibilityUp"  th:src="@{/images/up.png}" style="width:15px; height:10px" />
+             		</h5>
+    				<p class="card-text">{{visibility.slice(-1)[0] }} (m)</p>
+    			</div>
+			</div>		
+		</div>
+		<div class="col-sm-6 col-lg-4 px-0">
+			<div class="card border border-info rounded-0">
+        		<div class="card-body text-center p-0">
+             		<h5 class="card-title text-primary" onClick="document.getElementById('slegis').scrollIntoView();">Slėgis
+					  <img id="pressureDown" th:src="@{/images/down.png}" style="width:15px; height:10px" />
+					  <img id="pressureUp" th:src="@{/images/up.png}" style="width:15px; height:10px" />
+             		</h5>
+    				<p class="card-text">{{pressure.slice(-1)[0] }} (hPa)</p>
+    			</div>
+			</div>		
+		</div>
+	</div>
+	<br><br><br><br><br><br>
+	
+	
+	
+	<div class="row mb-2" id="vanduo" >
+		<div class="col"> 
+			<div class="card">
+                <div class="card-body mx-1 "  id='root'>
+                    <canvas  id="chLine" ></canvas>
+                </div>
+			</div>
+		</div>
+	</div>
+	<div class="row mb-2" id="vejas">
+		<div class="col"> 
+			<div class="card">
+                <div class="card-body mx-1"  id='root'>
+                    <canvas  id="chWind"></canvas>
+                </div>
+			</div>
+		</div>
+	</div>
+	<div class="row mb-2" id="temperatura">
+		<div class="col"> 
+			<div class="card">
+                <div class="card-body mx-1"  id='root'>
+                    <canvas id="chTemp"></canvas>
+                </div>
+			</div>
+		</div>
+	</div>
+	<div class="row mb-2" id="matomumas">
+		<div class="col-sm-12 col-lg-6 mb-1"> 
+			<div class="card" >
+                <div class="card-body mx-1"  id='root'>
+                    <canvas id="chVis"></canvas>
+                </div>
+			</div>
+		</div>
+		<div class="col-sm-12 col-lg-6 mb-2" id="slegis"> 
+			<div class="card">
+                <div class="card-body mx-1"  id='root'>
+                    <canvas id="chPress"></canvas>
+                </div>
+			</div>
+		</div>
+	</div>
+	
+</div>
+
+
+		<script src="https://vuejs.org/js/vue.js"></script>
+  		<script type="text/javascript" th:src="@{/js/moment.min.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/axios.min.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/Chart.min.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/hammer.min.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/chartjs-plugin-zoom.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/chartjs-plugin-crosshair.min.js}" ></script>
+<script > 
+
+var app = new Vue({
+    el: '#root',
+    data : {
+    	posts: [],
+    	 velocity:[],
+    	 direction:[],
+    	 date:[],
+    	 post1:[],
+    	 post2:[],
+    	 post3:[],
+    	 post4:[],
+    	 temperature:[],
+    	 tempDate:[],
+    	 pressure:[],
+    	 pressDate:[],
+    	 visibility:[],
+    	 visDate:[],
+    	 windDate:[],
+    	 windSpeed:[],
+    	 windDirection:[],
+    	 windGust:[],
+    	 WaterDirection: [],
+    	 velocityImg:"down",
+    	 temperatureImg:"",
+    	 pressureImg:"",
+    	 visibilityImg:"",
+    	 windSpeedImg:"",
+    	 windGustImg:""
+	},
+	created(){
+		 this.getHidroData();
+		 this.getTemperature();
+		 this.getPressure();
+		 this.getVisibility();
+		 this.getWindData();
+		 this.interval = setInterval(function () {
+	          this.getWindData();
+	          this.getHidroData();
+	 		 this.getTemperature();
+	 		 this.getPressure();
+	 		 this.getVisibility();
+	        }.bind(this), 300000); 
+    },
+    methods: {
+    	
+    	getWindData() {
+    		axios.get("/wind").then(function(response){
+                this.post4 = response.data;
+				let date = [];
+            	this.post4.forEach(function(post){
+            		date.push(post.date);
+            	});
+            	this.windDate = date;
+				let windSpeed=[];
+				this.post4.forEach(function(post){
+					windSpeed.push(post.windSpeed);
+            	});
+				this.windSpeed=windSpeed;
+				let windDirection=[];
+				this.post4.forEach(function(post){
+					windDirection.push(-post.windDirection+90);
+            	});
+				this.windDirection=windDirection;
+				let windGust = [];
+            	this.post4.forEach(function(post){
+            		windGust.push(post.windGust);
+            	});
+				this.windGust=windGust;
+				
+				var point = new Image();
+				point.src = '[[@{/images/arrow.png}]]';
+				point.height = "15";
+				point.width  = "15";
+				Chart.defaults.global.elements.point.radius = 0;
+				let arrowArray=[];
+				for(i=0;i<windDirection.length;i++){
+					arrowArray.push(point);
+					for(z=0;z<5;z++){
+						arrowArray.push("triangle");
+						i++;
+					}
+				}
+				if(this.windSpeed[windSpeed.length-1]>this.windSpeed[windSpeed.length-2]){
+					var imgUp = document.getElementById('windUp');
+				    imgUp.style.visibility = 'visible';
+				    var imgDown = document.getElementById('windDown');
+				    imgDown.style.visibility = 'hidden';
+				   
+				}
+				else if(this.windSpeed[windSpeed.length-1]==this.windSpeed[windSpeed.length-2]){
+					var imgUp = document.getElementById('windUp');
+				    imgUp.style.visibility = 'hidden';
+				    var imgDown = document.getElementById('windDown');
+				    imgDown.style.visibility = 'hidden';
+				   
+				}
+				else{
+					var imgUp = document.getElementById('windUp');
+				    imgUp.style.visibility = 'hidden';
+				    var imgDown = document.getElementById('windDown');
+				    imgDown.style.visibility = 'visible';
+				}
+				
+				if(this.windGust[windGust.length-1]>this.windGust[windGust.length-2]){
+					var imgUp = document.getElementById('gustUp');
+				    imgUp.style.visibility = 'visible';
+				    var imgDown = document.getElementById('gustDown');
+				    imgDown.style.visibility = 'hidden';
+				}
+				else if(this.windGust[windGust.length-1]==this.windGust[windGust.length-2]){
+					var imgUp = document.getElementById('gustUp');
+				    imgUp.style.visibility = 'hidden';
+				    var imgDown = document.getElementById('gustDown');
+				    imgDown.style.visibility = 'hidden';
+				}
+				else{
+					var imgUp = document.getElementById('gustUp');
+				    imgUp.style.visibility = 'hidden';
+				    var imgDown = document.getElementById('gustDown');
+				    imgDown.style.visibility = 'visible';
+				}
+				
+	        	var colors = ['#007bff','#28a745','#333333','#c3e6cb','#dc3545','#6c757d'];				
+				var config= {	  
+				  type: 'line',
+				  data: {
+				    labels: this.windDate,
+				    datasets: [{
+						data: this.windSpeed,
+						borderColor: colors[0],
+						backgroundColor: 'transparent',
+						pointBackgroundColor: colors[0],
+				    	pointStyle:arrowArray,
+				    	pointBackgroundColor:'red',
+				    	pointRotation:this.windDirection,
+				    	lineTension:0,
+				    	label: 'Vėjo greitis (m/s)',
+				    },
+				    {
+				    	data: this.windGust,
+						borderColor: colors[5],
+						backgroundColor: 'transparent',
+						pointBackgroundColor: colors[0],
+				    	pointBackgroundColor:'red',
+				    	lineTension:0,
+				    	label: 'Gūsio greitis (m/s)',
+				    }
+				    
+				    ]
+				  },
+				  options: {
+				    legend: {
+				    	align:"start",
+				    	position:"bottom"
+				    },
+					hover: {
+						mode: 'index',
+				      intersect: false,
+				    },
+				    tooltips: {
+				    	mode: 'index',
+				      intersect: false,
+				      callbacks:{title:function(){}}
+				      
+				      
+				    },
+					title: {
+				            display: true,
+				            text: 'Vėjo greitis'
+				        },
+				    scales: {
+				      xAxes: [{				
+				        type: 'time',
+				        ticks: {
+	                        autoSkip: true,
+	                        source:'labels',
+	                        callback: function(tick, index, array) {
+	                              return (index % 3) ? "" : tick;
+	                               }
+	                    },
+		                time: {		                	
+		                    displayFormats: {
+		                    	'millisecond': 'HH:mm',
+		                        'second': 'HH:mm',
+		                        'minute': 'HH:mm',
+		                        'hour': 'HH:mm',
+		                    },
+		                   
+		                },
+				        display: true,
+				        scaleLabel: {
+				            display: true,
+				            labelString: 'Laikas'
+				        },
+				        ticks: {
+				        	tickMarkLength:100,
+				        	drawTick:false
+	                      },
+			      
+				      }],
+				      yAxes:[{
+				    	  ticks: {
+				    		  maxTicksLimit:5
+				    		  
+				            }
+				      }]  
+				    },
+				    plugins:{
+				    	
+						zoom: {
+							pan: {
+								enabled: true,
+								mode: 'x',
+							},
+							zoom: {
+								enabled: true,
+								mode: 'x'
+								
+							}
+						}
+				    
+					}  
+				  }
+			};	
+				if(window.myWind){window.myWind.destroy();}
+				var ctx = document.getElementById('chWind').getContext('2d');
+				window.myWind = new window.Chart(ctx, config);
+				
+				}.bind(this)); 
+        },
+    	
+    	
+    	getVisibility(){
+    		axios.get("/visibility").then(function(response){
+    			this.post3 = response.data;
+
+    			let  visibility=[];
+    			this.post3.forEach(function(post){
+    				visibility.push(post.visibility);
+            	});
+    			this.visibility=visibility;
+
+    			let  date=[];
+    			this.post3.forEach(function(post){
+            		date.push(post.date);
+            	});
+    			this.visDate=date;
+    			
+    			if(this.visibility[visibility.length-1]>this.visibility[visibility.length-2]){
+    				var imgUp = document.getElementById('visibilityUp');
+				    imgUp.style.visibility = 'visible';
+				    var imgDown = document.getElementById('visibilityDown');
+				    imgDown.style.visibility = 'hidden';
+				}
+    			else if(this.visibility[visibility.length-1]==this.visibility[visibility.length-2]){
+    				var imgUp = document.getElementById('visibilityUp');
+				    imgUp.style.visibility = 'hidden';
+				    var imgDown = document.getElementById('visibilityDown');
+				    imgDown.style.visibility = 'hidden';
+				}
+				else{
+					var imgUp = document.getElementById('visibilityUp');
+				    imgUp.style.visibility = 'hidden';
+				    var imgDown = document.getElementById('visibilityDown');
+				    imgDown.style.visibility = 'visible';
+				}
+    			
+	    			var colors = ['#007bff','#28a745','#333333','#c3e6cb','#dc3545','#6c757d'];
+    				var config={
+    						type: 'line',
+    						  data: {
+    						    labels: this.visDate,
+    						    datasets: [{
+    								data: this.visibility,
+    								borderColor: colors[0],
+    								pointRadius:0,
+    								backgroundColor: 'transparent',
+    						    	pointBackgroundColor:'red',
+    						    	lineTension:0,
+    						    	label:"Matomumas (m)"
+    						    }]
+    						  },
+    						  options: {
+    							    legend: {
+    							    	align:"start",
+    							    	position:"bottom"
+    							    },
+    								hover: {
+    									mode: 'index',
+    							      intersect: false,
+    							    },
+    							    tooltips: {
+    							    	mode: 'index',
+    							      intersect: false,
+    							      callbacks:{title:function(){}}
+    							    },
+    								title: {
+    							            display: true,
+    							            text: 'Matomumas'
+    							        },
+    							    scales: {
+    							      xAxes: [{
+    							        type: 'time',
+    					                time: {
+    					                    displayFormats: {
+    					                    	'millisecond': 'HH:mm',
+    					                        'second': 'HH:mm',
+    					                        'minute': 'HH:mm',
+    					                        'hour': 'HH:mm',   
+    					                    },
+    					                },
+    							        display: true,
+    							        scaleLabel: {
+    							            display: true,
+    							            labelString: 'Laikas'
+    							        },
+    							        ticks: {
+    							        	tickMarkLength:100,
+    							        	drawTick:false
+    				                      },
+    							      }],
+    							      yAxes:[{
+    							    	  ticks: {
+    							    		  maxTicksLimit:5
+    							            }
+    							      }]  
+    							    },
+    							    plugins: {
+    									zoom: {
+    										pan: {
+    											enabled: true,
+    											mode: 'x',
+    										},
+    										zoom: {
+    											enabled: true,
+    											mode: 'x'
+    										}
+    									}
+    								}  
+    							  }
+    				};
+    				if(window.myVis){window.myVis.destroy();}
+    				var ctx = document.getElementById('chVis').getContext('2d');
+    				window.myVis = new window.Chart(ctx, config);
+    			
+    		}.bind(this));
+    	},
+    	
+    	getPressure(){
+    		axios.get("/airPresure").then(function(response){
+    			this.post2 = response.data;
+
+    			let  airPressure=[];
+    			this.post2.forEach(function(post){
+    				airPressure.push(post.airPressure);
+            	});
+    			this.pressure=airPressure;
+
+    			let  date=[];
+    			this.post2.forEach(function(post){
+            		date.push(post.date);
+            	});
+    			this.pressDate=date;
+    			
+    			if(this.pressure[this.pressure.length-1]>this.pressure[this.pressure.length-2]){
+    				var imgUp = document.getElementById('pressureUp');
+				    imgUp.style.visibility = 'visible';
+				    var imgDown = document.getElementById('pressureDown');
+				    imgDown.style.visibility = 'hidden';
+				}
+    			else if(this.pressure[this.pressure.length-1]==this.pressure[this.pressure.length-2]){
+    				var imgUp = document.getElementById('pressureUp');
+				    imgUp.style.visibility = 'hidden';
+				    var imgDown = document.getElementById('pressureDown');
+				    imgDown.style.visibility = 'hidden';
+				}
+				else{
+					var imgUp = document.getElementById('pressureUp');
+				    imgUp.style.visibility = 'hidden';
+				    var imgDown = document.getElementById('pressureDown');
+				    imgDown.style.visibility = 'visible';
+				}
+    			
+	    			var colors = ['#007bff','#28a745','#333333','#c3e6cb','#dc3545','#6c757d'];
+    				var config={
+    						type: 'line',
+    						  data: {
+    						    labels: this.pressDate,
+    						    datasets: [{
+    								data: this.pressure,
+    								borderColor: colors[0],
+    								pointRadius:0,
+    								backgroundColor: 'transparent',
+    						    	pointBackgroundColor:'red',
+    						    	lineTension:0,
+    						    	label:"Oro Slėgis (hPa)"
+    						    }]
+    						  },
+    						  options: {
+    							    legend: {
+    							    	align:"start",
+    							    	position:"bottom"
+    							    },
+    								hover: {
+    									mode: 'index',
+    							      intersect: false,
+    							    },
+    							    tooltips: {
+    							    	mode: 'index',
+    							      intersect: false,
+    							      callbacks:{title:function(){}}
+    							    },
+    								title: {
+    							            display: true,
+    							            text: 'Oro Slėgis'
+    							        },
+    							    scales: {
+    							      xAxes: [{
+    							        type: 'time',
+    					                time: {
+    					                    displayFormats: {
+    					                    	'millisecond': 'HH:mm',
+    					                        'second': 'HH:mm',
+    					                        'minute': 'HH:mm',
+    					                        'hour': 'HH:mm',   
+    					                    },
+    					                },
+    							        display: true,
+    							        scaleLabel: {
+    							            display: true,
+    							            labelString: 'Laikas'
+    							        },
+    							        ticks: {
+    							        	tickMarkLength:100,
+    							        	drawTick:false
+    				                      },
+    							      }],
+    							      yAxes:[{
+    							    	  ticks: {
+    							    		  maxTicksLimit:5
+    							            }
+    							      }]  
+    							    },
+    							    plugins: {
+    									zoom: {
+    										pan: {
+    											enabled: true,
+    											mode: 'x',
+    										},
+    										zoom: {
+    											enabled: true,
+    											mode: 'x'
+    										}
+    									}
+    								}  
+    							  }
+    				};
+    				if(window.myPress){window.myPress.destroy();}
+    				var ctx = document.getElementById('chPress').getContext('2d');
+    				window.myPress = new window.Chart(ctx, config);
+    			
+    		}.bind(this));
+    	},
+    	
+    	
+    	getTemperature(){
+    		axios.get("/temperature").then(function(response){
+    			this.post1 = response.data;
+
+    			let  temp=[];
+    			this.post1.forEach(function(post){
+    				temp.push(post.temperature);
+            	});
+    			this.temperature=temp;
+
+    			let  date=[];
+    			this.post1.forEach(function(post){
+            		date.push(post.date);
+            	});
+    			this.tempDate=date;
+    			
+    			if(this.temperature[this.temperature.length-1]>this.temperature[this.temperature.length-2]){
+    				var imgUp = document.getElementById('tempUp');
+				    imgUp.style.visibility = 'visible';
+				    var imgDown = document.getElementById('tempDown');
+				    imgDown.style.visibility = 'hidden';
+				}
+    			else if(this.temperature[this.temperature.length-1]<this.temperature[this.temperature.length-2]){
+					var imgUp = document.getElementById('tempUp');
+				    imgUp.style.visibility = 'hidden';
+				    var imgDown = document.getElementById('tempDown');
+				    imgDown.style.visibility = 'visible';
+				}
+				else{
+				    var imgUp = document.getElementById('tempUp');
+				    imgUp.style.visibility = 'hidden';
+				    var imgDown = document.getElementById('tempDown');
+				    imgDown.style.visibility = 'hidden';
+				}
+    			
+	    			var colors = ['#007bff','#28a745','#333333','#c3e6cb','#dc3545','#6c757d'];
+    				var config={
+    						type: 'line',
+    						  data: {
+    						    labels: this.tempDate,
+    						    datasets: [{
+    								data: this.temperature,
+    								borderColor: colors[4],
+    								pointRadius:0,
+    								backgroundColor: 'transparent',
+    						    	pointBackgroundColor:'red',
+    						    	lineTension:0,
+    						    	label:"Temperatūra (°C)"
+    						    }]
+    						  },
+    						  options: {
+    							    legend: {
+    							    	align:"start",
+    							    	position:"bottom"
+    							    },
+    								hover: {
+    									mode: 'index',
+    							      intersect: false,
+    							    },
+    							    tooltips: {
+    							    	mode: 'index',
+    							      intersect: false,
+    							      callbacks:{title:function(){}}
+    							    },
+    								title: {
+    							            display: true,
+    							            text: 'Temparatūra'
+    							        },
+    							    scales: {
+    							      xAxes: [{
+    							        type: 'time',
+    					                time: {
+    					                    displayFormats: {
+    					                    	'millisecond': 'HH:mm',
+    					                        'second': 'HH:mm',
+    					                        'minute': 'HH:mm',
+    					                        'hour': 'HH:mm',   
+    					                    },
+    					                },
+    							        display: true,
+    							        scaleLabel: {
+    							            display: true,
+    							            labelString: 'Laikas'
+    							        },
+    							        ticks: {
+    							        	tickMarkLength:100,
+    							        	drawTick:false
+    				                      },
+    							      }],
+    							      yAxes:[{
+    							    	  ticks: {
+    							    		  maxTicksLimit:5
+    							            }
+    							      }]  
+    							    },
+    							    plugins: {
+    							    	
+    									zoom: {
+    										pan: {
+    											enabled: true,
+    											mode: 'x',
+    										},
+    										zoom: {
+    											enabled: true,
+    											mode: 'x'
+    										}
+    									}
+    								}  
+    							  }
+    				};
+    				if(window.myTemp){window.myTemp.destroy();}
+    				var ctx = document.getElementById('chTemp').getContext('2d');
+    				window.myTemp = new window.Chart(ctx, config);
+    			
+    		}.bind(this));
+    	},
+    	
+        
+    	
+    	 getHidroData() {
+    		axios.get("/hidroData").then(function(response){
+                this.posts = response.data;
+
+				let date = [];
+            	this.posts.forEach(function(post){
+            		date.push(post.date);
+            	});
+            	this.date = date;
+				let velocity=[];
+				this.posts.forEach(function(post){
+            		velocity.push(post.velocity);
+            	});
+				this.velocity=velocity;
+				let direction=[];
+				this.posts.forEach(function(post){
+					direction.push(-post.direction+90);
+            	});
+				this.direction=direction;
+				var WaterDirection;
+				
+				WaterDirection=this.posts.slice(-1)[0].direction;
+				console.log(this.posts.slice(-1)[0].velocity);
+				console.log(this.posts.slice(-2)[0].velocity);
+				
+				
+				if(this.velocity[velocity.length-1]>this.velocity[velocity.length-2]){
+					var imgUp = document.getElementById('velocityUp');
+				    imgUp.style.visibility = 'visible';
+				    var imgDown = document.getElementById('velocityDown');
+				    imgDown.style.visibility = 'hidden';
+				}
+				else if(this.velocity[velocity.length-1]<this.velocity[velocity.length-2]){
+					var imgUp = document.getElementById('velocityUp');
+				    imgUp.style.visibility = 'hidden';
+				    var imgDown = document.getElementById('velocityDown');
+				    imgDown.style.visibility = 'visible';
+				}
+				else{
+				    var imgUp = document.getElementById('velocityUp');
+				    imgUp.style.visibility = 'hidden';
+				    var imgDown = document.getElementById('velocityDown');
+				    imgDown.style.visibility = 'hidden';
+				}
+			
+				
+				WaterDirection= WaterDirection-180;
+				if(WaterDirection<0){
+					WaterDirection= WaterDirection+360;
+				}
+				if(WaterDirection>=30 && WaterDirection<=210 ){
+					WaterDirection="į marias";
+				}
+				else{
+					WaterDirection="į jūrą";
+				}
+				this.WaterDirection=WaterDirection;
+				
+				var point = new Image();
+				point.src = '[[@{/images/arrow.png}]]';
+				point.height = "15";
+				point.width  = "15";
+				
+				let arrowArray=[];
+				for(i=0;i<direction.length;i++){
+					arrowArray.push(point);
+					for(z=0;z<5;z++){
+						arrowArray.push("triangle");
+						i++;
+					}
+				}
+				Chart.defaults.global.elements.point.radius = 0;
+	        	var colors = ['#007bff','#28a745','#333333','#c3e6cb','#dc3545','#6c757d'];
+				var chLine = document.getElementById("chLine");
+				var dragOptions = {
+						animationDuration: 1000
+					};
+				
+				var config= {	  
+				  type: 'line',
+				  data: {
+				    labels: this.date,
+				    datasets: [{
+						data: this.velocity,
+						borderColor: colors[0],
+						backgroundColor: 'transparent',
+						pointBackgroundColor: colors[0],
+				    	pointStyle:arrowArray,
+				    	pointBackgroundColor:'red',
+				    	pointRotation:this.direction,
+				    	lineTension:0,
+				    	label:"Srovės greitis (knots)"
+				    }]
+				  },
+				  options: {
+				    legend: {
+				    	align:"start",
+				    	position:"bottom"
+				    },
+					hover: {
+						mode: 'index',
+				      intersect: false,
+				     //onHover:  function(c,i){
+				    //	 e = i[0];
+				    //	    console.log(e);
+				    //	    var x_value = this.data.labels[e._index];
+				    //	    var y_value = this.data.datasets[0].data[e._index];
+				    //	    console.log("x value",x_value);
+				    //	    console.log("y value",y_value);
+				     // }
+				    },
+				    tooltips: {
+				    	mode: 'index',
+				      intersect: false,
+				      callbacks:{title:function(){}}
+				    },
+					title: {
+				            display: true,
+							
+				            text: 'Vandens greitis'
+				        },
+				    scales: {
+				      xAxes: [{
+				    	  
+						
+				        type: 'time',
+		                time: {
+		                	
+		                    displayFormats: {
+		                    	'millisecond': 'HH:mm',
+		                        'second': 'HH:mm',
+		                        'minute': 'HH:mm',
+		                        'hour': 'HH:mm',
+
+		                       
+		                    },
+		                },
+				        display: true,
+				        scaleLabel: {
+				            display: true,
+				            labelString: 'Laikas'
+				        },
+				        ticks: {
+	                       // fontSize: 16
+				        	tickMarkLength:100,
+				        	drawTick:false
+	                      },
+			      
+				      }],
+				      yAxes:[{
+				    	  ticks: {
+				    		  maxTicksLimit:5
+				            }
+				      }]  
+				      
+				    },
+				    plugins: {
+						zoom: {
+							pan: {
+								enabled: true,
+								mode: 'x',
+								
+							},
+							zoom: {
+								enabled: true,
+								mode: 'x'
+								
+							}
+							
+						}
+					}  
+				  }
+			};	
+				window.resetZoom = function() {
+					window.myLine.resetZoom();
+				};
+				if(window.myLine){window.myLine.destroy();}
+				var ctx = document.getElementById('chLine').getContext('2d');
+				window.myLine = new window.Chart(ctx, config);
+				
+			//	Chart.plugins.register({
+			//		  afterEvent: function(chart, e) {
+						 // You could also look at the Chart.active array (hovered items are here) but I don't think there is any guarantee that that would exist in future versions, ie it's a non public undocumented property.
+			//		  }
+			//		});
+		
+
+				}.bind(this));
+            
+            
+        },
+        }
+       
+        
+    	
+    
+});
+
+
+
+</script>
+
+</body>
+</html>
